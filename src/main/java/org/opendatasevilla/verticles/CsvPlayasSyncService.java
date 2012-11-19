@@ -63,9 +63,7 @@ public class CsvPlayasSyncService {
                     playa.setNombre(line[3]);
                     playa.setPuntoMuestreo(StringUtils.hasText(line[4]) ? Integer.valueOf(line[4].trim()) : null);
                     playa.setAdoptadaPor(line[5]);
-                    playa.setUtmX(StringUtils.hasText(line[6]) ? Double.valueOf(line[6].trim()) : null);
-                    playa.setUtmY(StringUtils.hasText(line[7]) ? Double.valueOf(line[7].trim()) : null);
-                    playa.setUtmHuso(StringUtils.hasText(line[8]) ? Integer.valueOf(getFirstNumber(line[8])) : null);
+                    setGeo(line, playa);
                     playa.setFechaToma(StringUtils.hasText(line[9]) ? new SimpleDateFormat("dd/MM/yyyy").parse(line[9].trim()) : null);
                     playa.setEscherichiaColi(StringUtils.hasText(line[10]) ? Integer.valueOf(getFirstNumber(line[10])) : null);
                     playa.setEnterococo(StringUtils.hasText(line[11]) ? Integer.valueOf(getFirstNumber(line[11])) : null);
@@ -77,13 +75,26 @@ public class CsvPlayasSyncService {
                     logger.debug(String.format("imported %d : %s", imported, playa.getNombre()));
 
                 } catch (Throwable t) {
-                    logger.error("error importing playa", t.getMessage());
+//                    org.hibernate.service.jta.platform.spi.JtaPlatform test;
+                    logger.error("error importing playa", t);
                 }
             }
             reader.close();
             in.close();
         } catch (Exception ex) {
-            logger.error("error importing playa", ex.getMessage());
+            logger.error("error importing playa", ex);
+        }
+    }
+
+    private void setGeo(String[] line, Playa playa) {
+        Double utmx = (StringUtils.hasText(line[6]) ? Double.valueOf(line[6].trim()) : null);
+        Double utmy = (StringUtils.hasText(line[7]) ? Double.valueOf(line[7].trim()) : null);
+        Integer utmUso = (StringUtils.hasText(line[8]) ? Integer.valueOf(getFirstNumber(line[8])) : null);
+        if (utmx != null && utmy != null && utmUso != null) {
+            UtmCoordinateConversion conversion = new UtmCoordinateConversion();
+            double[] latLng = conversion.utm2LatLon(String.format("%d N %s %s", utmUso, utmx, utmy));
+            playa.setLatitude(latLng[0]);
+            playa.setLongitude(latLng[1]);
         }
     }
 

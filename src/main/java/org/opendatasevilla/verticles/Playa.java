@@ -1,18 +1,13 @@
 package org.opendatasevilla.verticles;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import org.hibernate.search.annotations.*;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "list", query = "select p from Playa p"),
-        @NamedQuery(name = "comunidad_count", query = "select p.comunidad, count(p) from Playa p group by p.comunidad order by count(p) desc"),
-        @NamedQuery(name = "adoptada_count", query = "select p.adoptadaPor, count(p) from Playa p group by p.adoptadaPor order by count(p) desc"),
-        @NamedQuery(name = "ecoli", query = "select p.escherichiaColi, p.nombre from Playa p order by p.escherichiaColi desc")
-})
+@Indexed
+@Spatial
 public class Playa {
 
     @Id
@@ -30,11 +25,11 @@ public class Playa {
 
     private String adoptadaPor;
 
-    private Double utmX;
+    @Longitude
+    private Double longitude;
 
-    private Double utmY;
-
-    private Integer utmHuso;
+    @Latitude
+    private Double latitude;
 
     private Date fechaToma;
 
@@ -100,28 +95,20 @@ public class Playa {
         this.adoptadaPor = adoptadaPor;
     }
 
-    public Double getUtmX() {
-        return utmX;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setUtmX(Double utmX) {
-        this.utmX = utmX;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
-    public Double getUtmY() {
-        return utmY;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setUtmY(Double utmY) {
-        this.utmY = utmY;
-    }
-
-    public Integer getUtmHuso() {
-        return utmHuso;
-    }
-
-    public void setUtmHuso(Integer utmHuso) {
-        this.utmHuso = utmHuso;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public Date getFechaToma() {
@@ -155,4 +142,5 @@ public class Playa {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
 }
