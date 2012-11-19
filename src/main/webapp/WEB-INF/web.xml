@@ -47,14 +47,5 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <!-- Welcome pages -->
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
-
-    <!-- 12 hours sessions -->
-    <session-config>
-        <session-timeout>720</session-timeout>
-    </session-config>
 
 </web-app>

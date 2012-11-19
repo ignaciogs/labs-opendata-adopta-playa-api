@@ -70,7 +70,7 @@ public class CsvPlayasSyncService {
                     playa.setEscherichiaColi(StringUtils.hasText(line[10]) ? Integer.valueOf(getFirstNumber(line[10])) : null);
                     playa.setEnterococo(StringUtils.hasText(line[11]) ? Integer.valueOf(getFirstNumber(line[11])) : null);
                     playa.setObservaciones(line[12]);
-                    String id = String.format("%s_%s", playa.getNombre(), playa.getMunicipio());
+                    String id = String.format("%s_%s", playa.getNombre().replaceAll(" ", "_"), playa.getMunicipio().replaceAll(" ", "_"));
                     playa.setId(id);
                     applicationContext.getBean(getClass()).save(playa, id);
                     imported++;
