@@ -11,7 +11,7 @@ import java.util.Date;
         @NamedQuery(name = "list", query = "select p from Playa p"),
         @NamedQuery(name = "comunidad_count", query = "select p.comunidad, count(p) from Playa p group by p.comunidad order by count(p) desc"),
         @NamedQuery(name = "adoptada_count", query = "select p.adoptadaPor, count(p) from Playa p group by p.adoptadaPor order by count(p) desc"),
-        @NamedQuery(name = "ecoli", query = "select p.escherichiaColi, p.nombre from Playa p order by escherichiaColi desc")
+        @NamedQuery(name = "ecoli", query = "select p.escherichiaColi, p.nombre from Playa p order by p.escherichiaColi desc")
 })
 public class Playa {
 
